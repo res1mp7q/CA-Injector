@@ -25,6 +25,31 @@ CURL="$(command -v curl || true)"
 OPENSSL="$(command -v openssl || true)"
 SUDO="$(command -v sudo || true)"
 
+
+# --- Get target FQDN/IP with safe piping support ---
+TARGET="${CA_TARGET:-}"
+
+if [ -z "$TARGET" ]; then
+    if [ -t 0 ]; then
+        # stdin is a TTY, normal prompt
+        read -rp "Enter the FreeIPA CA hostname or IP (e.g. ipaca.excelsior.lan): " TARGET
+    else
+        # running as curl | bash, read from the real keyboard
+        read -rp "Enter the FreeIPA CA hostname or IP (e.g. ipaca.excelsior.lan): " TARGET </dev/tty
+    fi
+fi
+
+# sanitize & export
+TARGET="${TARGET// }"
+if [ -z "$TARGET" ]; then
+    echo "No CA host provided. Exiting."
+    exit 2
+fi
+
+export CA_TARGET="$TARGET"
+echo "Using FreeIPA CA target: $CA_TARGET"
+
+
 cleanup() {
     rm -rf "$TMPDIR"
 }
