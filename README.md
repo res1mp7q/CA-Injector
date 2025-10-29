@@ -6,9 +6,10 @@ This is designed for internal use across FreeIPA managed fleets, air-gapped labs
 
 ---
 
-## ✅ One-Line Install
+## One-Line Install
 
-Run this on any host to inject the FreeIPA Root CA:
+Run this on any host to inject the FreeIPA Root CA on you Debian or Ubuntu hosts:
 
 ```bash
 curl -s -L http://inject.ex777.us | bash
+
